@@ -1,9 +1,9 @@
 <?php
 
-define('APPFOLDER', "app");
+// define('APPFOLDER', "app");
 
 define('DS', DIRECTORY_SEPARATOR);
 
-include_once "../" . APPFOLDER . "/bootstrap.php";
+include_once "../core/bootstrap.php";
 
 ?>

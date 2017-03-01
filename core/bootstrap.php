@@ -13,13 +13,13 @@ if( version_compare(PHP_VERSION, "5.0")<0 )
 */
 define("COUPE", "0.7");
 
-require "../lib/Coupe/Http/Request.php";
+require "lib/Coupe/Http/Request.php";
 
-require "../lib/Coupe/Http/Response.php";
+require "lib/Coupe/Http/Response.php";
 
-require "../lib/Coupe/Http/Server.php";
+require "lib/Coupe/Http/Server.php";
 
-require "../lib/Coupe/AppServer.php";
+require "lib/Coupe/AppServer.php";
 
 $app = \Coupe\AppServer::getInstance(\Coupe\AppServer::ENV_PORT, \Coupe\Http\Request::createFromEnv(), new \Coupe\Http\Response(\Coupe\Http\Response::HTTP_ENV));
 
