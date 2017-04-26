@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IMiddleware.php';
+
 /**
 * Classe Middleware
 *
@@ -15,7 +17,7 @@
 * @see \Habilis\Http
 */
 
-namespace Coupe\Http;
+namespace Coupe;
 
 class Middleware
 {

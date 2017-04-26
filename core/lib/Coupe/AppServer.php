@@ -48,7 +48,7 @@ final class AppServer extends \Coupe\Http\Server
 	 * para determinar o método HTTP.
 	 * Ex.: $app->get(), ->post(), etc. 
 	 */
-	public function __call($name, $arguments)
+	public function __call($name, $args)
     {
 
     	/*
@@ -56,55 +56,21 @@ final class AppServer extends \Coupe\Http\Server
     	 */
     	if( preg_match('~^[a-z]+$~i', $name))
     	{
-			return $this->_register(strtoupper($name), $arguments[0], $arguments[1], $arguments[2]);
+    	
+    		array_unshift($args, strtoupper($name));
+    	
+    		return call_user_func_array('self::_register', $args);
+			
 		}
 
 		throw new MemberAccessException('Method ' . $name . ' not exists.');
 
     }
 
-
-	/**
-	 * Essa função deve restornar
-	 * o caminho requisitado no
-	 * servidor levando em consideração
-	 * a possibilidade da aplicação
-	 * estar usando mode_rewiter.
-	 * O caminho é útil durante a
-	 * construção de aplicações web.
-	 */
-	public function path()
-	{
-
-		$script_path = explode("/", trim($_SERVER['SCRIPT_NAME'], "/"));
-
-		$request_path = explode("/", trim($_SERVER['REDIRECT_URL'], "/"));
-
-		$trimpos = 0;
-
-		foreach ($request_path as $k => $v)
-		{
-			if($request_path[$k]!=$script_path[$k])
-			{
-				$trimpos = $k; break;
-			}
-		}
-
-		return "/" . implode(array_slice($request_path, $trimpos), "/");
-
-
-		// $pathbase = str_replace('/' . basename($_SERVER['SCRIPT_NAME']), '', $_SERVER["PHP_SELF"]);
-
-		// $path = str_replace($pathbase, '', $_SERVER["REQUEST_URI"]);
-
-		// return str_replace($_SERVER["QUERY_STRING"], '', $path);
-
-	}
-
     /**
      * Registra metodos, rotas com seus middlewares e funcao. 
      */
-	protected function _register($method, $route, $opts, $func=NULL)
+	protected function _register($method, $route, $opts=array(), $func=NULL)
 	{
 
 		if( is_callable($opts) )
@@ -146,9 +112,11 @@ final class AppServer extends \Coupe\Http\Server
 		{
 
 			$pattern = "/^" . str_replace(array("/", "*", "%any", "%part", "%num"), array("\/", ".*", "(.*)", "([^\/]*)", "([0-9]+)"), $route) . "\/?$/";
+
+			// echo $this->request->path();
 			
-			if( preg_match($pattern, $this->path(), $m) )
-			{
+			if( preg_match($pattern, $this->request->path(), $m) )
+			{ 
 
 				call_user_func_array($opts['function'], array_slice($m, 1));
 				

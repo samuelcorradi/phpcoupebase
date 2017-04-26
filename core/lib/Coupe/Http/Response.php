@@ -1,16 +1,16 @@
 <?php
 
-namespace Coupe\Http;
+namespace Coupe\HTTP;
 
 /*
-* Resposde a requisições HTTP.
-* Método que trada que elaborar
-* as respostas a serem geradas
-* pelo servidor. Recebe o objeto
-* de requisição do cliente para
-* elaborar suas respostas.
-* Muito útil para negociação
-* de conteúdo.
+* Objeto de contendo informações
+* de uma resposta HTTP.
+* Recebe a versao do protocolo
+* HTTP como parametro, o status
+* da resposta e os dados de
+* cabeçalho.
+* Possui um metodo para definir
+* o corpo da resposta.
 */
 class Response
 {
@@ -38,7 +38,7 @@ class Response
 	*
 	* @var string Frase customizada.
 	*/
-	public $status_text;
+	public $statusText;
 
 	/**
 	 * Versão do HTTP utilizado na
@@ -51,14 +51,14 @@ class Response
 	*
 	* @var int Código do status.
 	*/
-	protected $_statuscode;
+	protected $statusCode;
 
 	/**
 	* Corpo da resposta a ser enviada.
 	*
 	* @var string Frase customizada.
 	*/
-	protected $_body;
+	protected $_body = "";
 
 	/**
 	* Configurações de frases que são
@@ -247,12 +247,21 @@ class Response
 
 	}
 
+	public function setBody($b)
+	{
+
+		$this->_body = "";
+
+		return $this->appendBody($b);
+
+	}
+
 	/**
 	* Define o corpo da resposta HTTP.
 	*
 	* @return string Corpo da resposta HTTP.
 	*/
-	public function setBody($b)
+	public function appendBody($b)
 	{
 
 		if (is_string($b) || is_numeric($b) || is_callable(array($b, '__toString')))
@@ -311,17 +320,17 @@ class Response
 	public function setStatusText($t)
 	{
 
-		if ($text===null)
+		if ($t===null)
 		{
-			$this->status_text = isset(static::$status[$code]) ? static::$status[$code] : 'unknown status';
+			$this->statusText = isset(static::$status[$this->statusCode]) ? static::$status[$this->statusCode] : 'unknown status';
 		}
 		elseif (false === $text)
 		{
-			$this->status_text = '';
+			$this->statusText = '';
 		}
 		else
 		{
-			$this->status_text = (string)$text;
+			$this->statusText = (string)$t;
 		}
 
 		return $this;
@@ -335,7 +344,7 @@ class Response
 	public function getStatusText()
 	{
 
-		return $this->status_text;
+		return $this->statusText;
 
 	}
 

@@ -125,6 +125,55 @@ class Request
 
 	}
 
+	
+
+
+	/**
+	 * Essa função deve restornar
+	 * o caminho requisitado no
+	 * servidor levando em consideração
+	 * a possibilidade da aplicação
+	 * estar usando mod_rewiter.
+	 * O caminho é útil durante a
+	 * construção de aplicações web.
+	 */
+	public function path()
+	{
+
+		// TODO: verificar esta funcao. O que acontece quando
+		// o framework for movido de pasta?
+		if($_SERVER['REDIRECT_URL']==$_SERVER['REQUEST_URI'])
+		{
+			return '/';
+		}
+
+		$script_path = explode("/", trim($_SERVER['SCRIPT_NAME'], "/"));
+
+		$request_path = explode("/", trim($_SERVER['REDIRECT_URL'], "/"));
+
+		// echo "<pre>" . print_r($_SERVER) . "</pre>";
+
+		$trimpos = 0;
+
+		foreach ($request_path as $k => $v)
+		{
+			if($request_path[$k]!=$script_path[$k])
+			{
+				$trimpos = $k; break;
+			}
+		}
+
+		return "/" . implode(array_slice($request_path, $trimpos), "/");
+
+
+		// $pathbase = str_replace('/' . basename($_SERVER['SCRIPT_NAME']), '', $_SERVER["PHP_SELF"]);
+
+		// $path = str_replace($pathbase, '', $_SERVER["REQUEST_URI"]);
+
+		// return str_replace($_SERVER["QUERY_STRING"], '', $path);
+
+	}
+
 
 	/**
 	* Pega os dados submetidos pelo

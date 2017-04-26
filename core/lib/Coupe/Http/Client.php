@@ -2,16 +2,6 @@
 
 namespace Coupe\Http;
 
-/*
-* Resposde a requisições HTTP.
-* Método que trada que elaborar
-* as respostas a serem geradas
-* pelo servidor. Recebe o objeto
-* de requisição do cliente para
-* elaborar suas respostas.
-* Muito útil para negociação
-* de conteúdo.
-*/
 class Client
 {
 

@@ -164,7 +164,7 @@ class Server
 		/*
 		 * Define a primeira linha.
 		 */
-		if(function_exists(http_response_code))
+		if(function_exists('http_response_code'))
 		{
 			http_response_code($res->getStatus());
 		}
