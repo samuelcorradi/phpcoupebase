@@ -1,7 +1,5 @@
 <?php
 
-require_once 'IMiddleware.php';
-
 /**
 * Classe Middleware
 *
@@ -19,13 +17,26 @@ require_once 'IMiddleware.php';
 
 namespace Coupe;
 
-class Middleware
+abstract class Middleware implements IMiddleware
 {
 
-	public function __construct()
-	{
-		
+	/**
+	 * Objeto com as informações
+	 * de requisição do cliente.
+	 */
+	public $request;
 
+	/**
+	 * Método construtor privado
+	 * para implementar singleton.
+	 */
+	public function __construct(\Coupe\Http\Request $req)
+	{
+
+		$this->request = $req;
+
+		$this->response = $res;
+		
 	}
 
 

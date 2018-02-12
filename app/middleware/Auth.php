@@ -1,6 +1,4 @@
-<?php 
-
-require_once '../Middleware.php';
+<?php
 
 namespace Coupe\Middleware;
 

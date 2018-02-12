@@ -1,9 +1,9 @@
 <?php
 
 /**
-* Classe Middleware
+* Interface Middleware
 *
-* Classe para criação de filtros HTTP.
+* Interface para filtros HTTP.
 *
 * @version 0.1
 * @package Coupe\Http\Middleware
@@ -20,7 +20,6 @@ namespace Coupe;
 interface IMiddleware
 {
 
-	public function action();
-
+	public function __invoke();
 
 }

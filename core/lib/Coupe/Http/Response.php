@@ -273,7 +273,7 @@ class Response
 
 		}
 
-		throw new \UnexpectedValueException(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', gettype($content)));
+		throw new \UnexpectedValueException(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', gettype($b)));
         
 	}
 

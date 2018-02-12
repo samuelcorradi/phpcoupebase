@@ -1,8 +1,9 @@
 <?php
 
-$app->get("*", function() use($app)
+$app->get("*", array('middleware'=>array('Test')), function() use($app)
 {
 
+	/*
 	require_once "../../phpcoupecms/core/lib/Coupe/CMS.php";
 
 	require_once "../../phpcoupecms/core/lib/Habilis/File.php";
@@ -26,6 +27,7 @@ $app->get("*", function() use($app)
 	$html = $cms->loadPage($app->request->path());
 
 	$app->response->appendBody($html);
+	*/
 
 });
 

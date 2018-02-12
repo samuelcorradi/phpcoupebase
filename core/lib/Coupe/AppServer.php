@@ -104,13 +104,13 @@ final class AppServer extends \Coupe\Http\Server
 	public function run()
 	{
 
-		$find = false;
+		$finded = false;
 
 		$method = $this->request->getMethod();
 
 		foreach((array)$this->reg[ $method ] as $route=>$opts)
 		{
-
+	
 			$pattern = "/^" . str_replace(array("/", "*", "%any", "%part", "%num"), array("\/", ".*", "(.*)", "([^\/]*)", "([0-9]+)"), $route) . "\/?$/";
 
 			// echo $this->request->path();
@@ -119,23 +119,34 @@ final class AppServer extends \Coupe\Http\Server
 			{ 
 
 				call_user_func_array($opts['function'], array_slice($m, 1));
+
+				// TODO: implementar execucao de middlewares
+				if( array_key_exists('middleware', $opts) )
+				{
+
+					foreach($opts['middleware'] as $middle_name)
+					{
+
+						$refl = new \ReflectionClass("\Coupe\Middleware\\" . $middle_name);
+
+						$inst = $refl->newInstanceArgs(array($this->request));
+
+						$inst();
+
+					}
+
+				}
 				
-				$find = true;
+				$finded = true;
 				
 				break;
 
-			}
-		
-			// TODO: implementar execucao de middlewares
-			if( ! array_key_exists('middleware', $opts) )
-			{
-				
 			}
 			
 		}
 
 		// TODO: fazer redirect para pagina de erro 404
-		if( ! $find )
+		if( ! $finded )
 		{
 			throw new \Exception("Caminho não encontrado.", 1);
 		}
